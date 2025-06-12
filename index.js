@@ -1,3 +1,4 @@
+// Phraseオブジェクトを外のファイルから使えるようにする
 module.exports = Phrase;
 
 
@@ -5,6 +6,12 @@ module.exports = Phrase;
 function reverse(string) {
   return Array.from(string).reverse().join("");
 }
+
+// すべてのStringでreverse()関数をメソッドとして使えるようにする
+String.prototype.reverse = function() {
+  return Array.from(this).reverse().join("");
+}
+
 
 // Emailを＠にて分割する
 // function emailParts(email) {
@@ -16,15 +23,19 @@ function reverse(string) {
 // }
 // const emailParts = email => email.toLowerCase().split("@");
 
-// すべてのStringでreverse()関数をメソッドとして使えるようにする
-String.prototype.reverse = function() {
-  return Array.from(this).reverse().join("");
-}
 
 // Phraseオブジェクトを定義する
 function Phrase(content) {
   this.content = content;
 
+  // コンテンツの文字部分のみを取り出す
+  // 利用例:
+  //   new Phrase("Hello, world!").letters() === "Helloworld"
+  this.letters = function letters() {
+    return (this.content.match(/[a-z]/gi) || []).join("");
+    // return Array.from(this.content).filter(c => c.match(/[a-z]/i)).join("");
+  } 
+  
   // 文字列を小文字に変換する（無名関数の定義）
   this.processor = function(string) {
     return string.toLowerCase();
@@ -32,13 +43,14 @@ function Phrase(content) {
 
   // パリンドロームのテスト用に変換したcontentを返す
   this.processedContent = function processedContent() {
-    return this.processor(this.content);
+    return this.processor(this.letters());
   }
 
   // パリンドロームならtrueを、違うならfalseを返す
   this.palindrome = function palindrome() {
     return this.processedContent() === this.processedContent().reverse();
   }
+
 
   // フレーズを全部大文字にする
   this.louder = function louder() {

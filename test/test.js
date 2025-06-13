@@ -23,6 +23,11 @@ describe("Phrase", function() {
       let punctualPalindrome = new Phrase("Madam, I'm Adam.");
       assert(punctualPalindrome.palindrome());
     });
+
+    it("空文字列はfalseを返すこと", function() {
+      let emptyPalindrome = new Phrase("");
+      assert.ok(!emptyPalindrome.palindrome());
+    });
   });
 
   describe("#letters", function() {

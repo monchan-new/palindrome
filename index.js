@@ -50,9 +50,13 @@ function Phrase(content) {
     return this.processor(this.letters());
   }
 
-  // パリンドロームならtrueを、違うならfalseを返す
+  // パリンドロームならtrueを、違うならfalseを返す（空文字の場合もfalseを返す）
   this.palindrome = function palindrome() {
-    return this.processedContent() === this.processedContent().reverse();
+    if (this.processedContent()) {
+      return this.processedContent() === this.processedContent().reverse();
+    } else {
+      return false;
+    }
   }
 
 
